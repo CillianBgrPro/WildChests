@@ -52,6 +52,7 @@ public final class ProvidersHandler implements ProvidersManager {
 
     private final List<IChestPlaceListener> chestPlaceListeners = new LinkedList<>();
     private final List<IChestBreakListener> chestBreakListeners = new LinkedList<>();
+    private final List<Runnable> settingsReloadListeners = new LinkedList<>();
 
     private boolean isShopsBridge = false;
     private long lastBulkTransactionStart = -1;
@@ -202,6 +203,14 @@ public final class ProvidersHandler implements ProvidersManager {
         this.chestBreakListeners.forEach(chestBreakListener -> chestBreakListener.breakChest(offlinePlayer, chest));
     }
 
+    public void registerSettingsReloadListener(Runnable listener) {
+        this.settingsReloadListeners.add(listener);
+    }
+
+    public void notifySettingsReloadListeners() {
+        this.settingsReloadListeners.forEach(Runnable::run);
+    }
+
     private void registerPricesProvider(WildChestsPlugin plugin) {
         if (!(pricesProvider instanceof PricesProvider_Default))
             return;
@@ -265,6 +274,9 @@ public final class ProvidersHandler implements ProvidersManager {
 
         if (Bukkit.getPluginManager().isPluginEnabled("CoreProtect"))
             registerHook("CoreProtectHook");
+
+        if (Bukkit.getPluginManager().isPluginEnabled("ItemsAdder"))
+            registerHook("ItemsAdderHook");
     }
 
     private void registerHook(String className) {

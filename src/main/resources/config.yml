@@ -115,6 +115,14 @@ max-stacks-on-drop: -1
 # blacklist: A list of items that won't be picked up by the chests (only works for auto-suction for now)
 # whitelist: A list of items that will be picked up by the chests (only works for auto-suction for now)
 # particles: A list of particles that will be shown to the chest.
+# itemsadder: (fork) Show an ItemsAdder model instead of the vanilla chest.
+#   Short form: `itemsadder: namespace:item_id`, or a section:
+#   itemsadder:
+#     model: namespace:item_id   # ItemsAdder item used for the chest item and the placed chest
+#     scale: 1.0                 # size of the model (it must fully cover the chest)
+#     offset-y: 0.0              # vertical offset of the model
+#     rotation: 0                # extra rotation in degrees, added to the chest facing
+#     display-transform: FIXED   # NONE, FIXED, HEAD, GUI, GROUND, THIRDPERSON_RIGHTHAND...
 
 chests:
   linked_chest:

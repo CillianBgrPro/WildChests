@@ -11,6 +11,8 @@ import com.bgsoftware.wildchests.utils.RecipeUtils;
 import com.google.common.collect.Iterators;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
+
+import javax.annotation.Nullable;
 import org.bukkit.inventory.Recipe;
 
 import java.math.BigInteger;
@@ -47,6 +49,13 @@ public final class WChestData implements ChestData {
     //Storage Units only!
     private BigInteger maxAmount;
 
+    // ItemsAdder model (fork)
+    private String customModel = null;
+    private double customModelScale = 1.0;
+    private double customModelOffsetY = 0.0;
+    private String customModelTransform = "FIXED";
+    private float customModelRotation = 0f;
+
     public WChestData(String name, ItemStack itemStack, ChestType chestType) {
         this.name = name;
         this.itemStack = itemStack;
@@ -80,6 +89,51 @@ public final class WChestData implements ChestData {
 
     public ItemStack getItemRaw() {
         return itemStack.clone();
+    }
+
+    public void setItemRaw(ItemStack itemStack) {
+        this.itemStack = itemStack.clone();
+    }
+
+    @Nullable
+    public String getCustomModel() {
+        return customModel;
+    }
+
+    public void setCustomModel(@Nullable String customModel) {
+        this.customModel = customModel;
+    }
+
+    public double getCustomModelScale() {
+        return customModelScale;
+    }
+
+    public void setCustomModelScale(double customModelScale) {
+        this.customModelScale = customModelScale;
+    }
+
+    public double getCustomModelOffsetY() {
+        return customModelOffsetY;
+    }
+
+    public void setCustomModelOffsetY(double customModelOffsetY) {
+        this.customModelOffsetY = customModelOffsetY;
+    }
+
+    public float getCustomModelRotation() {
+        return customModelRotation;
+    }
+
+    public void setCustomModelRotation(float customModelRotation) {
+        this.customModelRotation = customModelRotation;
+    }
+
+    public String getCustomModelTransform() {
+        return customModelTransform;
+    }
+
+    public void setCustomModelTransform(String customModelTransform) {
+        this.customModelTransform = customModelTransform;
     }
 
     @Override
@@ -333,6 +387,11 @@ public final class WChestData implements ChestData {
         this.whitelisted = chestData.whitelisted;
         this.particles = chestData.particles;
         this.maxAmount = chestData.maxAmount;
+        this.customModel = chestData.customModel;
+        this.customModelScale = chestData.customModelScale;
+        this.customModelOffsetY = chestData.customModelOffsetY;
+        this.customModelTransform = chestData.customModelTransform;
+        this.customModelRotation = chestData.customModelRotation;
     }
 
 }

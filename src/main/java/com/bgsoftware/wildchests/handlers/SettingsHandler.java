@@ -141,6 +141,9 @@ public final class SettingsHandler {
 
         plugin.getChestsManager().loadChestsData(chestsData);
 
+        if (plugin.getProviders() != null)
+            plugin.getProviders().notifySettingsReloadListeners();
+
         WildChestsPlugin.log(" - Found " + chestsAmount + " chests in config.yml.");
         WildChestsPlugin.log("Loading configuration done (Took " + (System.currentTimeMillis() - startTime) + "ms)");
     }
@@ -270,6 +273,18 @@ public final class SettingsHandler {
 
         if (section.contains("particles")) {
             chestData.setParticles(section.getStringList("particles"));
+        }
+
+        // ItemsAdder model (fork): `itemsadder: namespace:id` or a section with model/scale/offset-y/display-transform
+        if (section.isConfigurationSection("itemsadder")) {
+            WChestData wChestData = (WChestData) chestData;
+            wChestData.setCustomModel(section.getString("itemsadder.model"));
+            wChestData.setCustomModelScale(section.getDouble("itemsadder.scale", 1.0));
+            wChestData.setCustomModelOffsetY(section.getDouble("itemsadder.offset-y", 0.0));
+            wChestData.setCustomModelTransform(section.getString("itemsadder.display-transform", "FIXED").toUpperCase(Locale.ENGLISH));
+            wChestData.setCustomModelRotation((float) section.getDouble("itemsadder.rotation", 0.0));
+        } else if (section.isString("itemsadder")) {
+            ((WChestData) chestData).setCustomModel(section.getString("itemsadder"));
         }
 
         return chestData;
