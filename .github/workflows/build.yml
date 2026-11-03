@@ -4,6 +4,9 @@ on:
   push:
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -34,3 +37,15 @@ jobs:
           name: WildChests
           path: target/WildChests-*.jar
           if-no-files-found: error
+
+      # Also store the jar in the `builds` branch so it can be fetched with git.
+      - name: Publish jar to builds branch
+        if: github.ref_name != 'builds'
+        run: |
+          mkdir /tmp/out && cp target/WildChests-*.jar /tmp/out/
+          cd /tmp/out
+          git init -q -b builds
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add . && git commit -q -m "Build ${GITHUB_SHA::7}"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" builds
